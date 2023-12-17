@@ -1,4 +1,6 @@
 // ignore: file_names
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -160,6 +162,40 @@ class TextFieldEmailState extends State<TextFieldEmail> {
               ),
       ),
     );
+  }
+}
+
+class TextFieldImage extends StatefulWidget {
+  const TextFieldImage({super.key});
+
+  @override
+  _TextFieldImageState createState() => _TextFieldImageState();
+}
+
+class _TextFieldImageState extends State<TextFieldImage> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 20.0),
+        ElevatedButton(
+          onPressed: getImage,
+          child: const Text("Select Photo for Contact"),
+        ),
+      ],
+    );
+  }
+
+  Future getImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+
+    setState(() {
+      Contact.tempContact.imageFile = imageTemporary;
+    });
   }
 }
 

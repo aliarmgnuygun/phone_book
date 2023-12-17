@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, non_constant_identifier_names, prefer_const_constructors, unnecessary_string_interpolations, unnecessary_const
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:phone_book/deleteContact.dart';
 import 'package:phone_book/listViewPhone.dart';
@@ -14,6 +16,7 @@ class ContactDetails extends StatelessWidget {
   late String contact_occupation;
   late String contact_phone;
   late String contact_email;
+  late File? contact_imageFile;
 
   var counter = 0;
   late int position;
@@ -28,6 +31,7 @@ class ContactDetails extends StatelessWidget {
         contact_occupation = element.occupation;
         contact_phone = element.phone;
         contact_email = element.email;
+        contact_imageFile = element.imageFile;
         break;
       }
       counter++;
@@ -79,11 +83,18 @@ class ContactDetails extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundColor:
-                      Color((contact_fullName.hashCode * 0xFFFFFF).toInt())
+                  backgroundImage: contact_imageFile != null
+                      ? FileImage(contact_imageFile!)
+                      : null,
+                  backgroundColor: contact_imageFile != null
+                      ? null
+                      : Color((contact_fullName.hashCode * 0xFFFFFF).toInt())
                           .withOpacity(1.0),
                   radius: 40,
-                  child: Text(getInitials(contact_fullName),
+                  child: Text(
+                      contact_imageFile != null
+                          ? ''
+                          : getInitials(contact_fullName),
                       style: const TextStyle(
                         fontSize: 40,
                         color: Colors.white,

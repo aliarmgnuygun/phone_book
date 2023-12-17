@@ -1,8 +1,9 @@
 // ignore: file_names
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:phone_book/contact.dart';
 import 'package:phone_book/main.dart';
 import 'package:phone_book/listViewPhone.dart';
@@ -11,7 +12,7 @@ import 'package:phone_book/toastMessage.dart';
 
 class AddNewContact extends StatelessWidget {
   final ListViewPhoneState state;
-  const AddNewContact({super.key, required this.state});
+  AddNewContact({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +25,8 @@ class AddNewContact extends StatelessWidget {
     );
   }
 
-  void onButtonSaveClick(
-    BuildContext context,
-    String fullName,
-    String occupation,
-    String phone,
-    String email,
-  ) {
+  void onButtonSaveClick(BuildContext context, String fullName,
+      String occupation, String phone, String email) {
     if (fullName.isEmpty || phone.isEmpty) {
       showToastMessage('Please fill up name - surname and phone fields');
     } else {
@@ -45,6 +41,7 @@ class AddNewContact extends StatelessWidget {
 
       if (isValid) {
         Contact model = Contact(fullName, occupation, email, phone);
+        model.imageFile = Contact.tempContact.imageFile;
         ContactList.listModel.add(model);
         Navigator.pop(context);
         showToastMessage("New contact added.");
@@ -236,6 +233,17 @@ class AddNewContact extends StatelessWidget {
                   ),
                   title: Container(
                     child: const TextFieldEmail(),
+                  ),
+                  dense: true,
+                ),
+
+                ListTile(
+                  leading: const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    child: Icon(Icons.image),
+                  ),
+                  title: Container(
+                    child: TextFieldImage(),
                   ),
                   dense: true,
                 ),

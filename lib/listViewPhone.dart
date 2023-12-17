@@ -74,11 +74,17 @@ class ListViewPhoneState extends State<ListViewPhone> {
             title: Row(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundColor:
-                      Color((contact.fullName.hashCode * 0xFFFFFF).toInt())
+                  backgroundImage: contact.imageFile != null
+                      ? FileImage(contact.imageFile!)
+                      : null,
+                  backgroundColor: contact.imageFile != null
+                      ? null
+                      : Color((contact.fullName.hashCode * 0xFFFFFF).toInt())
                           .withOpacity(1.0),
                   child: Text(
-                    getInitials(contact.fullName),
+                    contact.imageFile != null
+                        ? ''
+                        : getInitials(contact.fullName),
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
